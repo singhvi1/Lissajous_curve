@@ -4,7 +4,26 @@ body {
     background: #f0f0f0;
 }
 
-.controls {
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.wave-control {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 250px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.global-controls {
     margin-bottom: 20px;
 }
 
