@@ -1,12 +1,18 @@
 const canvas = document.getElementById("waveCanvas");
 const ctx = canvas.getContext("2d");
 
-const thetaSlider = document.getElementById("thetaSlider");
-const radiusSlider = document.getElementById("radiusSlider");
+const thetaXSlider = document.getElementById("thetaXSlider");
+const thetaYSlider = document.getElementById("thetaYSlider");
+const radiusXSlider = document.getElementById("radiusXSlider");
+const radiusYSlider = document.getElementById("radiusYSlider");
 const speedSlider = document.getElementById("speedSlider");
-const thetaValue = document.getElementById("thetaValue");
-const radiusValue = document.getElementById("radiusValue");
+
+const thetaXValue = document.getElementById("thetaXValue");
+const thetaYValue = document.getElementById("thetaYValue");
+const radiusXValue = document.getElementById("radiusXValue");
+const radiusYValue = document.getElementById("radiusYValue");
 const speedValue = document.getElementById("speedValue");
+
 const pauseButton = document.getElementById("pauseButton");
 
 const xEquation = document.getElementById("xEquation");
@@ -17,15 +23,27 @@ let time = 0;
 let isPaused = false;
 let speed = parseFloat(speedSlider.value);
 
-let tracePoints = []; // Store trace points
+let tracePoints = [];
 
+thetaXSlider.addEventListener("input", () => {
+    thetaXValue.textContent = thetaXSlider.value + "°";
+    tracePoints = [];
+});
+thetaYSlider.addEventListener("input", () => {
+    thetaYValue.textContent = thetaYSlider.value + "°";
+    tracePoints = [];
+});
+radiusXSlider.addEventListener("input", () => {
+    radiusXValue.textContent = radiusXSlider.value;
+    tracePoints = [];
+});
+radiusYSlider.addEventListener("input", () => {
+    radiusYValue.textContent = radiusYSlider.value;
+    tracePoints = [];
+});
 speedSlider.addEventListener("input", () => {
     speed = parseFloat(speedSlider.value);
     speedValue.textContent = speed.toFixed(3);
-});
-
-thetaSlider.addEventListener("input", () => {
-    tracePoints = []; // Clear trace when theta changes
 });
 
 pauseButton.addEventListener("click", () => {
@@ -42,17 +60,15 @@ function draw() {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    const thetaDeg = parseFloat(thetaSlider.value);
-    const thetaRad = thetaDeg * Math.PI / 180;
-    const radius = parseFloat(radiusSlider.value);
+    const thetaXDeg = parseFloat(thetaXSlider.value);
+    const thetaYDeg = parseFloat(thetaYSlider.value);
+    const thetaXRad = thetaXDeg * Math.PI / 180;
+    const thetaYRad = thetaYDeg * Math.PI / 180;
 
-    thetaValue.textContent = `${thetaDeg}\u00b0`;
-    radiusValue.textContent = `${radius}`;
+    const radiusX = parseFloat(radiusXSlider.value);
+    const radiusY = parseFloat(radiusYSlider.value);
 
-    const waveAmplitude = 100;
-    const waveFrequency = 0.02;
-
-    // Axes
+    // Draw Axes
     ctx.beginPath();
     ctx.strokeStyle = "gray";
     ctx.lineWidth = 1;
@@ -62,32 +78,34 @@ function draw() {
     ctx.lineTo(centerX, canvas.height);
     ctx.stroke();
 
-    // X-axis sine wave
+    // Draw Sine Wave X (Red)
     ctx.beginPath();
     ctx.strokeStyle = "red";
+    const waveAmplitude = 100;
+    const waveFrequency = 0.02;
     for (let x = 0; x < canvas.width; x++) {
-        const y = centerY / 2 + waveAmplitude * Math.sin(waveFrequency * x + time);
+        const y = centerY / 2 + waveAmplitude * Math.sin(waveFrequency * x + time + thetaXRad);
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
     }
     ctx.stroke();
 
-    // Y-axis sine wave
+    // Draw Sine Wave Y (Blue)
     ctx.beginPath();
     ctx.strokeStyle = "blue";
     for (let y = 0; y < canvas.height; y++) {
-        const x = centerX / 2 + waveAmplitude * Math.sin(waveFrequency * y + time + thetaRad);
+        const x = centerX / 2 + waveAmplitude * Math.sin(waveFrequency * y + time + thetaYRad);
         if (y === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
     }
     ctx.stroke();
 
-    // Moving Dot
+    // Moving Dot Position
     const omegaT = time;
-    const xDot = centerX + radius * Math.sin(omegaT);
-    const yDot = centerY + radius * Math.sin(omegaT + thetaRad);
+    const xDot = centerX + radiusX * Math.sin(omegaT + thetaXRad);
+    const yDot = centerY + radiusY * Math.sin(omegaT + thetaYRad);
 
-    // Add current dot to trace points
+    // Trace Points
     tracePoints.push({ x: xDot, y: yDot });
 
     // Draw Trace
@@ -114,20 +132,13 @@ function draw() {
     ctx.setLineDash([]);
     ctx.stroke();
 
-    // Circle Path
-    ctx.beginPath();
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 1.5;
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.stroke();
+    // Update Math Display
+    const X_val = (radiusX * Math.sin(omegaT + thetaXRad)).toFixed(2);
+    const Y_val = (radiusY * Math.sin(omegaT + thetaYRad)).toFixed(2);
 
-    // Update Math Formulas
-    const X_val = (radius * Math.sin(omegaT)).toFixed(2);
-    const Y_val = (radius * Math.sin(omegaT + thetaRad)).toFixed(2);
-
-    xEquation.innerHTML = `X(t) = ${radius} \u00d7 sin(\u03c9t) = <strong>${X_val}</strong>`;
-    yEquation.innerHTML = `Y(t) = ${radius} \u00d7 sin(\u03c9t + ${thetaDeg}\u00b0) = <strong>${Y_val}</strong>`;
-    resultant.innerHTML = `Current Position \u2192 (<strong>${X_val}</strong>, <strong>${Y_val}</strong>)`;
+    xEquation.innerHTML = `X(t) = ${radiusX} × sin(ωt + ${thetaXDeg}°) = <strong>${X_val}</strong>`;
+    yEquation.innerHTML = `Y(t) = ${radiusY} × sin(ωt + ${thetaYDeg}°) = <strong>${Y_val}</strong>`;
+    resultant.innerHTML = `Current Position → (<strong>${X_val}</strong>, <strong>${Y_val}</strong>)`;
 
     time += speed;
     requestAnimationFrame(draw);

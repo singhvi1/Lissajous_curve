@@ -1,29 +1,23 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-}
-
-canvas {
-    border: 1px solid black;
     background: #f0f0f0;
-    margin-top: 20px;
 }
 
 .controls {
-    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
-button {
-    padding: 8px 16px;
-    margin-top: 10px;
+canvas {
+    background: white;
+    border: 1px solid black;
 }
 
 .math-display {
     margin-top: 20px;
-    font-size: 18px;
+    font-size: 1.2rem;
 }
 
-.formula {
-    font-family: monospace;
-    font-size: 20px;
+.formula strong {
+    color: green;
 }
