@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lissajous Curve Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Lissajous Curve Visualizer with Live Math</h1>
+
+    <div class="controls">
+        <label>Theta (°): <input type="range" id="thetaSlider" min="0" max="360" value="90"></label>
+        <span id="thetaValue">90\u00b0</span>
+        <br>
+        <label>Radius: <input type="range" id="radiusSlider" min="50" max="250" value="150"></label>
+        <span id="radiusValue">150</span>
+        <br>
+        <label>Speed: <input type="range" id="speedSlider" min="0.001" max="0.05" step="0.001" value="0.02"></label>
+        <span id="speedValue">0.02</span>
+        <br>
+        <button id="pauseButton">Pause</button>
+    </div>
+
+    <canvas id="waveCanvas" width="800" height="500"></canvas>
+
+    <div class="math-display">
+        <div class="formula" id="xEquation">X(t) = R \u00d7 sin(\u03c9t)</div>
+        <div class="formula" id="yEquation">Y(t) = R \u00d7 sin(\u03c9t + \u03b8)</div>
+        <div class="formula" id="resultant">Current Position \u2192 (X, Y)</div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

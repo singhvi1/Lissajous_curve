@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+canvas {
+    border: 1px solid black;
+    background: #f0f0f0;
+    margin-top: 20px;
+}
+
+.controls {
+    margin-top: 10px;
+}
+
+button {
+    padding: 8px 16px;
+    margin-top: 10px;
+}
+
+.math-display {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.formula {
+    font-family: monospace;
+    font-size: 20px;
+}
